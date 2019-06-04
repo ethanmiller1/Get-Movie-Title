@@ -1,10 +1,12 @@
 # Ethan Miller
 # 3/13/2019
 
-# create an instance of the IMDb class
 from pyperclip import copy
 from win32api import GetVolumeInformation
 from imdb import IMDb
+from wmi import WMI
+
+# Create an instance of the IMDb class.
 ia = IMDb()
 
 def getVolumeLabel(drive):
@@ -45,7 +47,44 @@ def getImdbTitle(search):
     movie_name = f'{title} ({year})'
     return movie_name
 
-movie_name = getImdbTitle(getVolumeLabel("D:\\"))
+# Note: This function adds about 6 seconds to runtime. It is recomended that you remove it and simply set {letter} to your cdrom (e.g. replace letter = findCdRoms() with letter = 'D:')
+def findCdRoms():
+  '''
+  Tests all of your disk drives to see whether
+  they are a cdrom or not and returns the item
+  selected from a list of drive letters that are cdroms.
+  '''
+  # Get the drive letter of your DVD drive.
+  cdroms = WMI()
+  letters = []
+  for cdrom in cdroms.Win32_CDROMDrive():
+      letters.append(cdrom.Drive)
+
+  if len(letters) > 1:
+    # Print the available drives.
+    for letter in letters:
+      print(f'{letters.index(letter)+1}. {letter}')
+    # Input validation.
+    while True:
+      try:
+        # Promt user to select drive.
+        index = input('Please select which drive to search (by number): ')
+        return letters[int(index)-1]
+      except IndexError:
+        print('Index error: That number doesn\'t appear to match any of the disk drives listed.')
+        continue
+      except ValueError:
+        print('Value error: Value must be a numeric digit. Try again and God bless.')
+        continue
+      except Exception as e:
+        print('Opps! Something went wrong. ', e)
+        continue
+  else:
+    return letters[0]
+
+# Get the volume label of your cdrom.
+letter = findCdRoms()
+movie_name = getImdbTitle(getVolumeLabel(letter))
 
 # Remove special characters from string.
 movie_name = movie_name.translate({ord(i): None for i in '<>:"/\|?*'})
