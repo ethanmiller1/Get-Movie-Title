@@ -26,10 +26,6 @@ pip install pyperclip
 pip install IMDbPY
 ```
 
-### Change drive letter
-
-This program assumes your DVD drive is D:\\. Change it in the program to correspond to whichever drive is your DVD drive.
-
 ### Create an executable
 
 Ensure you have [pyinstaller](https://pypi.org/project/PyInstaller/ "PyPI") installed, then:

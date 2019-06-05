@@ -10,42 +10,52 @@ from imdb import IMDb
 ia = IMDb()
 
 def getVolumeLabel(drive):
-    '''
-    Reads in a disk drive ("D:\\") and returns its volume label.
-    '''
-    # return name of movie from DVD Drive
-    volume_information = GetVolumeInformation(drive)
-    volume_label = volume_information[0]
-    return volume_label
+  '''
+  Reads in a disk drive ("D:\\") and returns its volume label.
+  '''
+  # Return name of movie from DVD Drive.
+  volume_information = GetVolumeInformation(drive)
+  volume_label = volume_information[0]
+  return volume_label
 
-def getImdbTitle(search):
-    '''
-    Reads in a string to search IMDB for
-    and returns the first result found.
-    '''
+def getImdbMovie(search):
+  '''
+  Reads in a string to search IMDB for
+  and returns the first result found.
+  '''
+  try:
+    return ia.search_movie(search)[0]
+  except:
+    return searchForMovie()
+
+def getImdbTitle(movie):
+  '''
+  Takes in a movie object and concatonates
+  the title and year attributes.
+  '''
+  # Update result to get the basic information.
+  ia.update(movie)
+
+  # Get the title and year.
+  title = movie.get(movie.keys()[0])
+  year = movie.get(movie.keys()[2])
+
+  # String the input together and return it.
+  movie_name = f'{title} ({year})'
+  return movie_name
+
+def searchForMovie():
+  '''
+  Prompts user for input to search IMDB for.
+  '''
+  # If IMDB can't find the movie from volume information, manually input the Title.
+  while True:
     try:
-      movie = ia.search_movie(search)[0]
+      title_input = input('Oops! IMDB can\'t find that title. Please manually enter the movie title: ')
+      return ia.search_movie(title_input)[0]
     except:
-      # If IMDB can't find the movie from volume information, manually input the Title.
-      done = False
-      while done == False:
-        try:
-          title_input = input('Oops! IMDB can\'t find that title. Please manually enter the movie title: ')
-          movie = ia.search_movie(title_input)[0]
-          done = True
-        except:
-          continue
+      continue
 
-    # Update result to get the basic information.
-    ia.update(movie)
-
-    # Get the title and year.
-    title = movie.get(movie.keys()[0])
-    year = movie.get(movie.keys()[2])
-
-    # String the input together and return it.
-    movie_name = f'{title} ({year})'
-    return movie_name
 
 def getDrives():
   '''
@@ -130,7 +140,13 @@ def selectCdRom():
 
 # Get the volume label of your CD ROM.
 drive = selectCdRom()
-movie_name = getImdbTitle(getVolumeLabel(drive))
+
+try:
+  # Search IMDB from CD ROM volume label.
+  movie_name = getImdbTitle(getImdbMovie(getVolumeLabel(drive)))
+except:
+  # Search IMDB from user input.
+  movie_name = getImdbTitle(searchForMovie())
 
 # Remove special characters from string.
 movie_name = movie_name.translate({ord(i): None for i in '<>:"/\|?*'})
