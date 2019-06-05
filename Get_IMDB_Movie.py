@@ -1,11 +1,21 @@
 # Ethan Miller
 # 3/13/2019
 
-from pyperclip import copy
-from win32api import GetVolumeInformation, GetLogicalDrives
-from win32file import GetDriveType
-from imdb import IMDb
-
+try:
+  from pyperclip import copy
+  from win32api import GetVolumeInformation, GetLogicalDrives
+  from win32file import GetDriveType
+  from imdb import IMDb
+except ModuleNotFoundError as e:
+  print('Oops! Something went wrong.', e)
+  count = 0
+  while count <= 5:
+    input('Please exit the application . . . ')
+    count += 1
+  input('Press enter to exit . . .')
+  print('Exiting application . . .')
+  exit()
+    
 # Create an instance of the IMDb class.
 ia = IMDb()
 

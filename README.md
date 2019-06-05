@@ -28,10 +28,10 @@ pip install IMDbPY
 
 ### Create an executable
 
-Ensure you have [pyinstaller](https://pypi.org/project/PyInstaller/ "PyPI") installed, then:
+Ensure you have [pyinstaller](https://pypi.org/project/PyInstaller/ "PyPI") installed with this project's dependencies, then:
 
 ``` bash
-pyinstaller -F -i "..\images\get_movie_title.ico" batch_file_rename.py
+pyinstaller -F -i "..\get_movie_title\images\get_movie_title.ico" Get_IMDB_Movie.py
 ```
 
 ### Create a shortcut as a script
