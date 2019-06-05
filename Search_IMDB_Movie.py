@@ -4,6 +4,7 @@
 try:
   from pyperclip import copy
   from imdb import IMDb
+  from re import search
 except ModuleNotFoundError as e:
   print('Oops! Something went wrong.', e)
   input('Press enter to exit . . .')
@@ -44,13 +45,28 @@ def getImdbTitle(movie):
   movie_name = f'{title} ({year})'
   return movie_name
 
+def copyTitle(search):
+  '''
+  Copies the movie title and year returned by
+  the getImdbTitle() function to clipboard.
+  '''
+  # Search for movie.
+  movie = getImdbMovie(search)
+  movie_name = getImdbTitle(movie)
 
+  # Remove special characters from string.
+  movie_name = movie_name.translate({ord(i): None for i in '<>:"/\|?*'})
+
+  # Copy movie name to clipboard.
+  copy(movie_name)
+
+# Get search input from user.
 title_input = input('Please enter the title and year of the movie you want: ')
-movie = getImdbMovie(title_input)
-movie_name = getImdbTitle(movie)
 
-# Remove special characters from string.
-movie_name = movie_name.translate({ord(i): None for i in '<>:"/\|?*'})
-
-# Copy movie name to clipboard.
-copy(movie_name)
+# Test for flags.
+search_object = search(r'-(\d)', title_input)
+if search_object:
+  num_results = search_object.group(1)
+  print(f'Display {num_results} results.')
+else:
+  copyTitle(title_input)
