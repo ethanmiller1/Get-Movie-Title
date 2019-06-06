@@ -5,6 +5,7 @@ try:
   from pyperclip import copy
   from imdb import IMDb
   from re import search
+  from time import time
 except ModuleNotFoundError as e:
   print('Oops! Something went wrong.', e)
   input('Press enter to exit . . .')
@@ -76,7 +77,9 @@ def searchTitle():
     num_results = int(search_object.group(2))
     search_string = search_object.group(1)
     print(f'Searching IMDB for first {num_results} results . . .')
+    startTime = time()
     movies = checkMovieTitles(search_string, num_results)
+    print(f'(Search took {round((time() - startTime), 2)} seconds to complete.)\n')
     for movie in movies:
       print(f'{movies.index(movie)+1}. {movie}')
     return selectTitle(movies)
@@ -95,7 +98,7 @@ def selectTitle(movies):
   while True:
     try:
       # Promt user to select drive.
-      index = input('Select the movie you want by number: ')
+      index = input('\nSelect the movie you want by number: ')
       return movies[int(index)-1]
     except IndexError:
       print('Index error: That number doesn\'t appear to match any of the movies listed.')
