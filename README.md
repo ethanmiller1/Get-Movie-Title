@@ -52,15 +52,7 @@ Right-click any directory and select New > Shortcut, then for the location of th
 
 ## Usage
 
-<style>
-.get_movie_title {
-width: 20px;
-position: relative;
-top: 4px;
-}
-</style>
-
-### <img src="https://github.com/king-melchizedek/Get-Movie-Title/raw/master/images/get_movie_title.ico" class="get_movie_title" > Get Movie Title
+### <img src="https://github.com/king-melchizedek/Get-Movie-Title/raw/master/images/get_movie_title.ico" width="20px" position="relative" top="4px" > Get Movie Title
 
 Simply launch the app to copy the move Title (Year) to clipboard.
 
@@ -68,7 +60,7 @@ Simply launch the app to copy the move Title (Year) to clipboard.
 
 If the volume label does not contain the name of the movie, the user will be prompted to input it manually.
 
-### <img src="https://github.com/king-melchizedek/Get-Movie-Title/raw/master/images/search_movie_title.ico" class="get_movie_title" > Search Movie Title
+### <img src="https://github.com/king-melchizedek/Get-Movie-Title/raw/master/images/search_movie_title.ico" width="20px" position="relative" top="4px" > Search Movie Title
 
 Launch the app to manually input the movie you want to search for. Add the flag `-3` to have 3 movies returned, and then pick one. (Replace 3 with however many results you want returned to choose from.)
 
