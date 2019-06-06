@@ -38,48 +38,73 @@ def getMovieTitles(search, num_results):
     movie_titles.append(movie_name)
   return movie_titles
 
-def selectTitle():
-  pass
-
 def checkMovieTitles(search, num_results):
   '''
-  Error handling for returnMovieTitles() function.
+  Error handling for getMovieTitles() function.
   '''
   try:
-    return returnMovieTitles(search, num_results)
+    return getMovieTitles(search, num_results)
   except:
     # If IMDB can't find the movie from volume information, manually input the Title.
     while True:
       try:
         title_input = input('Oops! IMDB can\'t find that title. Please manually enter the movie title: ')
-        return returnMovieTitles(title_input, num_results)
+        return getMovieTitles(title_input, num_results)
       except:
         continue
 
-def copyTitle(search, num_results):
+def copyTitle(movie_name):
   '''
-  Copies the movie title and year returned by
-  the getImdbTitle() function to clipboard.
+  Reads in a string, removes unwanted characters,
+  and copies the product to clipboard.
   '''
-  # Search for movie.
-  movies = getMovieTitles(search, num_results)
-  movie_name = movies[0]
-
   # Remove special characters from string.
   movie_name = movie_name.translate({ord(i): None for i in '<>:"/\|?*'})
-
   # Copy movie name to clipboard.
   copy(movie_name)
 
-# Get search input from user.
-title_input = input('Please enter the title and year of the movie you want: ')
+def searchTitle():
+  '''
+  Prompts user for input and returns a list of matching movies.
+  '''
+  # Get search input from user.
+  title_input = input('Please enter the title and year of the movie you want: ')
 
-# Test for flags.
-search_object = search(r'(.*)-(\d)', title_input)
-if search_object:
-  num_results = int(search_object.group(2))
-  search = search_object.group(1)
-  print(f'Searching IMDB for first {num_results} results . . .')
-  print(getMovieTitles(search, num_results))
-else:
-  copyTitle(title_input, 1)
+  # Test for flags.
+  search_object = search(r'(.*)-(\d)', title_input)
+  if search_object:
+    num_results = int(search_object.group(2))
+    search_string = search_object.group(1)
+    print(f'Searching IMDB for first {num_results} results . . .')
+    movies = checkMovieTitles(search_string, num_results)
+    for movie in movies:
+      print(f'{movies.index(movie)+1}. {movie}')
+    return selectTitle(movies)
+  else:
+    # Search for movie and return a list with one movie.
+    movies = checkMovieTitles(title_input, 1)
+    # Select the first result.
+    movie_name = movies[0]
+    return movie_name
+
+def selectTitle(movies):
+  '''
+  Reads in a list of movie objects returns one.
+  '''
+  # Input validation.
+  while True:
+    try:
+      # Promt user to select drive.
+      index = input('Select the movie you want by number: ')
+      return movies[int(index)-1]
+    except IndexError:
+      print('Index error: That number doesn\'t appear to match any of the movies listed.')
+      continue
+    except ValueError:
+      print('Value error: Value must be a numeric digit. Try again and God bless.')
+      continue
+    except Exception as e:
+      print('Opps! Something went wrong. ', e)
+      continue
+
+copyTitle(searchTitle())
