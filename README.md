@@ -13,15 +13,29 @@
 
 This application was created to help in keeping with the [Plex file naming convention](https://support.plex.tv/articles/naming-and-organizing-your-movie-media-files/ "Naming and organizing your Movie files") when digitalizing DVD's with Handbrake. Rather than manually searching for the year of each movie, just run this program and it will (1) find the volume label for your DVD, (2) search IMDB for a movie that matches the volume label, and (3) copy the movie title and year to your clipboard in the following format: Title (Year). Then you can paste it right into Handbrake.
 
+## Download
+
+Visit the [releases](https://github.com/ethanmiller1/Get-Movie-Title/releases) page to download the exe.
+
+Note: you may have to unblock it from Windows SmartScreen prevention:
+
+![](https://github.com/ethanmiller1/Batch-File-Rename-Helper/raw/master/images/unblock.png)
+
 ## Build
 
 Ensure you have [Python](https://www.python.org/downloads/windows/ "Python Releases for Windows") installed, then:
 
 ``` bash
-cd venv/Scripts
-activate
-cd ../..
-python Get_IMDB_Movie.py
+# Activate command prompt if using powershell
+$ cmd
+# Create a virtual environment
+$ python -m venv venv
+# Activate your virtual environment
+$ cd venv/Scripts && activate && cd ../..
+# Install dependencies to venv
+$ pip install -r requirements.txt
+# Run the program
+$ python Get_IMDB_Movie.py
 ```
 
 ### Dependencies
